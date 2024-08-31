@@ -1,13 +1,13 @@
 package model;
 
 public class Candidate {
-    private String firstName;
-    private String lastName;
-    private String ethnicity;
-    private String registrationDate;
-    private int icfesScore;
-    private int mathScore;
-    private int englishScore;
+    private final String firstName;
+    private final String lastName;
+    private final String ethnicity;
+    private final String registrationDate;
+    private final int icfesScore;
+    private final int mathScore;
+    private final int englishScore;
 
     public Candidate(String firstName, String lastName, String ethnicity, String registrationDate, int icfesScore, int mathScore, int englishScore) {
         this.firstName = firstName;

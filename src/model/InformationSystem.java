@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InformationSystem {
-    private List<Candidate> candidates;
+    private final List<Candidate> candidates;
 
     public InformationSystem() {
         candidates = new ArrayList<>();

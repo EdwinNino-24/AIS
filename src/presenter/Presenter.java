@@ -7,12 +7,11 @@ import view.View;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
 
 public class Presenter {
 
-    private InformationSystem model;
-    private View view;
+    private final InformationSystem model;
+    private final View view;
 
     public Presenter(InformationSystem model, View view) {
         this.model = model;
@@ -26,14 +25,14 @@ public class Presenter {
             String firstName = view.getFirstName();
             String lastName = view.getLastName();
             String ethnicity = view.getEthnicity();
-            int icfes = view.getIcfesScore();
             String date = view.getDate();
+            int icfes = view.getIcfesScore();
             int math = view.getMathScore();
             int english = view.getEnglishScore();
 
             Candidate newCandidate = new Candidate(firstName, lastName, ethnicity, date, icfes, math, english);
             model.addCandidate(newCandidate);
-            Collections.sort(model.getCandidates(), new CandidateComparator());
+            model.getCandidates().sort(new CandidateComparator());
 
             view.getTableModel().setRowCount(0);
             for (Candidate candidate : model.getCandidates()) {
