@@ -8,13 +8,17 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Objects;
+
 import com.toedter.calendar.JCalendar;
 
 public class View extends JFrame {
 
-    private JTextField firstNameField, lastNameField, ethnicityField, dateField, icfesField, mathField, englishField;
+    private JTextField firstNameField, lastNameField, dateField, icfesField, mathField, englishField;
+    private JComboBox<String> ethnicityField;
     private JButton addButton, showCalendarButton;
-    JTable table;
     private DefaultTableModel tableModel;
     private JCalendar calendar;
 
@@ -34,12 +38,13 @@ public class View extends JFrame {
         inputPanel.setLayout(new GridLayout(8, 2));
 
         calendar = new JCalendar();
-        calendar.setVisible(false); // Inicialmente oculto
+        calendar.setVisible(false);
 
         firstNameField = new JTextField();
         lastNameField = new JTextField();
-        ethnicityField = new JTextField();
-        dateField = new JTextField(15);
+        String[] options = {"NO APLICA", "INDÍGENAS", "AFROCOLOMBIANOS", "RAIZALES-SA&P", "GITANO"};
+        ethnicityField = new JComboBox<>(options);
+        dateField = new JTextField(new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()));
         dateField.setEnabled(false);
         icfesField = new JTextField();
         mathField = new JTextField();
@@ -78,7 +83,7 @@ public class View extends JFrame {
         tableModel.addColumn("Matemáticas");
         tableModel.addColumn("Inglés");
 
-        table = new JTable(tableModel);
+        JTable table = new JTable(tableModel);
         table.setEnabled(false);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         JScrollPane tableScrollPane = new JScrollPane(table);
@@ -97,7 +102,7 @@ public class View extends JFrame {
     }
 
     public String getEthnicity() {
-        return ethnicityField.getText();
+        return Objects.requireNonNull(ethnicityField.getSelectedItem()).toString();
     }
 
     public String getDate() {
@@ -139,7 +144,17 @@ public class View extends JFrame {
     public void setCalendarVisibility(boolean visible) {
         calendar.setVisible(visible);
         showCalendarButton.setText(visible ? "Ocultar Calendario" : "Mostrar Calendario");
-        pack(); // Ajustar el tamaño del frame al contenido
+        pack();
+    }
+
+    public void resetFields(){
+        firstNameField.setText("");
+        lastNameField.setText("");
+        dateField.setText(new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()));
+        ethnicityField.setSelectedIndex(0);
+        icfesField.setText("0");
+        mathField.setText("0");
+        englishField.setText("0");
     }
 
     static class DigitFilter extends DocumentFilter {

@@ -1,18 +1,15 @@
 package presenter;
 
+import com.toedter.calendar.JCalendar;
 import model.Candidate;
 import model.CandidateComparator;
 import model.InformationSystem;
 import view.View;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.toedter.calendar.JCalendar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Presenter {
 
@@ -23,19 +20,14 @@ public class Presenter {
         this.model = model;
         this.view = view;
 
-        // Obtener el calendario de la vista
         JCalendar calendar = view.getCalendar();
 
-        // Agregar un PropertyChangeListener al calendario
-        calendar.addPropertyChangeListener("calendar", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                Date selectedDate = calendar.getDate();
-                if (selectedDate != null) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    String formattedDate = dateFormat.format(selectedDate);
-                    view.getDateField().setText(formattedDate);
-                }
+        calendar.addPropertyChangeListener("calendar", evt -> {
+            Date selectedDate = calendar.getDate();
+            if (selectedDate != null) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String formattedDate = dateFormat.format(selectedDate);
+                view.getDateField().setText(formattedDate);
             }
         });
 
@@ -69,6 +61,8 @@ public class Presenter {
                         candidate.getMathScore(),
                         candidate.getEnglishScore()});
             }
+
+            view.resetFields();
         }
     }
 
