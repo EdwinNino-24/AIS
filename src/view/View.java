@@ -8,15 +8,15 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import com.toedter.calendar.JCalendar;
 
 public class View extends JFrame {
 
-    private JTextField firstNameField, lastNameField, ethnicityField, dateField, icfesField , mathField, englishField;
-    private JButton addButton;
+    private JTextField firstNameField, lastNameField, ethnicityField, dateField, icfesField, mathField, englishField;
+    private JButton addButton, showCalendarButton;
     JTable table;
     private DefaultTableModel tableModel;
+    private JCalendar calendar;
 
     public View() {
         setupUI();
@@ -33,10 +33,13 @@ public class View extends JFrame {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(8, 2));
 
+        calendar = new JCalendar();
+        calendar.setVisible(false); // Inicialmente oculto
+
         firstNameField = new JTextField();
         lastNameField = new JTextField();
         ethnicityField = new JTextField();
-        dateField = new JTextField(new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()));
+        dateField = new JTextField(15);
         dateField.setEnabled(false);
         icfesField = new JTextField();
         mathField = new JTextField();
@@ -52,7 +55,8 @@ public class View extends JFrame {
         inputPanel.add(lastNameField);
         inputPanel.add(new JLabel("     Etnia:"));
         inputPanel.add(ethnicityField);
-        inputPanel.add(new JLabel("     Fecha de Inscripción:     "));
+        showCalendarButton = new JButton("Mostrar Calendario");
+        inputPanel.add(showCalendarButton);
         inputPanel.add(dateField);
         inputPanel.add(new JLabel("     Puntaje ICFES:"));
         inputPanel.add(icfesField);
@@ -76,11 +80,12 @@ public class View extends JFrame {
 
         table = new JTable(tableModel);
         table.setEnabled(false);
-        table.setAutoResizeMode(1);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         JScrollPane tableScrollPane = new JScrollPane(table);
 
         add(inputPanel, BorderLayout.WEST);
         add(tableScrollPane, BorderLayout.EAST);
+        add(calendar, BorderLayout.CENTER);
     }
 
     public String getFirstName() {
@@ -115,8 +120,26 @@ public class View extends JFrame {
         return tableModel;
     }
 
+    public JCalendar getCalendar() {
+        return calendar;
+    }
+
+    public JTextField getDateField() {
+        return dateField;
+    }
+
     public void setAddButtonListener(ActionListener listener) {
         addButton.addActionListener(listener);
+    }
+
+    public void setShowCalendarButtonListener(ActionListener listener) {
+        showCalendarButton.addActionListener(listener);
+    }
+
+    public void setCalendarVisibility(boolean visible) {
+        calendar.setVisible(visible);
+        showCalendarButton.setText(visible ? "Ocultar Calendario" : "Mostrar Calendario");
+        pack(); // Ajustar el tamaño del frame al contenido
     }
 
     static class DigitFilter extends DocumentFilter {
@@ -134,5 +157,4 @@ public class View extends JFrame {
             }
         }
     }
-
 }
